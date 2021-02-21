@@ -17,6 +17,9 @@ plugins {
     id 'org.springframework.boot' version '2.0.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.7.RELEASE'
 
+    // OpenAPI generator
+    id "org.openapi.generator" version "5.0.0"
+
     // Apply the plugin to add support for jacoco test coverage report
     id 'jacoco'
 }
@@ -34,16 +37,16 @@ dependencies {
     // Use TestNG framework, also requires calling test.useTestNG() below
     testImplementation 'org.testng:testng:7.0.0'
 
-    compile 'org.springframework.boot:spring-boot-starter-aop'
-    compile 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'commons-cli:commons-cli:1.4'
     compile 'commons-io:commons-io:2.8.0'
     compile 'com.fasterxml.jackson.core:jackson-core:2.12.1'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.1'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.4'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile ("org.springframework.security:spring-security-test")
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation ("org.springframework.security:spring-security-test")
 }
 
 application {
@@ -61,6 +64,16 @@ test {
     }
     // Use TestNG for unit tests
     useTestNG()
+}
+
+// https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-gradle-plugin/README.adoc#configuration
+openApiGenerate {
+    validateSpec = true
+    generatorName = "java"
+    modelPackage = "org.ga4gh.drs.model"
+    apiPackage = "org.ga4gh.drs.api"
+    inputSpec = "openapi/data_repository_service.swagger.yaml"
+    //outputDir = "src/main/java/org/ga4gh/drs/openapi"
 }
 
 jacoco {
